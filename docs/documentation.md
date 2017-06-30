@@ -208,7 +208,7 @@ Use `:SPUpdate SpaceVim` in SpaceVim buffer, This command will open a buffer to 
 
 To update manually close Vim and update the git repository:
 
-`git -C ~/.SpaceVim pull`.
+`git -C ~/.yh392261226 pull`.
 
 ### Update plugins
 
@@ -220,7 +220,7 @@ This section is an overview of layers. A more extensive introduction to writing 
 
 ## Custom Configuration
 
-User configuration can be stored in your ~/.SpaceVim.d directory.
+User configuration can be stored in your ~/.yh392261226.d directory.
 
 ### Automatic Generation
 
@@ -228,9 +228,9 @@ The very first time SpaceVim starts up, it will ask you several questions and th
 
 ### Alternative directory
 
-`~/.SpaceVim.d/` will be added to `&runtimepath` of vim. read <kbd>:h rtp</kbd>.
+`~/.yh392261226.d/` will be added to `&runtimepath` of vim. read <kbd>:h rtp</kbd>.
 
-It is also possible to override the location of `~/.SpaceVim.d/` using the environment variable `SPACEVIMDIR`. Of course you can also use symlinks to change the location of this directory.
+It is also possible to override the location of `~/.yh392261226.d/` using the environment variable `SPACEVIMDIR`. Of course you can also use symlinks to change the location of this directory.
 
 SpaceVim also support local config file for project, the init file is `.SpaceVim.d/init.vim`
 in the root of your project. `.SpaceVim.d/` will also be added into runtimepath.
@@ -238,7 +238,7 @@ in the root of your project. `.SpaceVim.d/` will also be added into runtimepath.
 here is an example config file for SpaceVim:
 
 ```vim
-" Here are some basic customizations, please refer to the ~/.SpaceVim.d/init.vim
+" Here are some basic customizations, please refer to the ~/.yh392261226.d/init.vim
 " file for all possible options:
 let g:spacevim_default_indent = 3
 let g:spacevim_max_column     = 80
@@ -298,7 +298,7 @@ SpaceVim has a minimalistic and distraction free UI:
 
 The default colorscheme of SpaceVim is [gruvbox](https://github.com/morhetz/gruvbox). There are two variants of this colorscheme, a dark one and a light one. Some aspects of these colorscheme can be customized in the custom configuration file, read <kbd>:h gruvbox</kbd>.
 
-It is possible to define your default themes in your `~/.SpaceVim.d/init.vim` with the variable colorschemes. For instance, to specify [vim-one with dark colorscheme](https://github.com/rakr/vim-one):
+It is possible to define your default themes in your `~/.yh392261226.d/init.vim` with the variable colorschemes. For instance, to specify [vim-one with dark colorscheme](https://github.com/rakr/vim-one):
 
 ```vim
 let g:spacevim_colorscheme = 'one'
@@ -320,7 +320,7 @@ SpaceVim use true colors by default, so you should make sure your terminal suppo
 
 The default font used by SpaceVim is DejaVu Sans Mono for Powerline. It is recommended to install it on your system if you wish to use it.
 
-To change the default font set the variable `g:spacevim_guifont` in your `~/.SpaceVim.d/init.vim` file. By default its value is:
+To change the default font set the variable `g:spacevim_guifont` in your `~/.yh392261226.d/init.vim` file. By default its value is:
 
 ```vim
 let g:spacevim_guifont = 'DejaVu\ Sans\ Mono\ for\ Powerline\ 11'

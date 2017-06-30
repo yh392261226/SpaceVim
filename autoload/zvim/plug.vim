@@ -74,7 +74,7 @@ function! s:install_manager() abort
                 echohl None
             endif
         endif
-        exec 'set runtimepath+=~/.cache/vim-plug/'
+        exec 'set runtimepath+=~/.yh392261226/vim-plug/'
     endif
 endf
 

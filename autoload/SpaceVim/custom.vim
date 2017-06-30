@@ -45,7 +45,7 @@ function! s:basic_mode() abort
 endfunction
 
 function! s:write_to_config(config) abort
-    let cf = expand('~/.SpaceVim.d/init.vim')
+    let cf = expand('~/.yh392261226.d/init.vim')
     if filereadable(cf)
         return
     endif

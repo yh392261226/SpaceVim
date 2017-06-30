@@ -4,7 +4,7 @@
 " Adds integration between tmux and vim panes. Switch between panes
 " seamlessly.
 " This layer is not added by default. To include it, add
-" `SpaceVim#layers#load('tmux')` to your `~/.SpaceVim.d/init.vim`.
+" `SpaceVim#layers#load('tmux')` to your `~/.yh392261226.d/init.vim`.
 " This layer currently overwrites some SpaceVim keybinds including multiple
 " cursors. If you are having issues with <C-h> in a neovim buffer, see
 " `https://github.com/neovim/neovim/issues/2048#issuecomment-78045837`

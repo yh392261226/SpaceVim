@@ -102,13 +102,13 @@ SpaceVim 采用最快补全引擎 deoplete, 该引擎不同与YouCompleteMe的�
 
 ## 用户配置
 
-SpaceVim 将从 ~/.SpaceVim.d/init.vim 和当前目录的 ./SpaceVim.d/init.vim 载入配置，并且更新 rtp，用户可以在 ~/.SpaceVim.d/ 和 .SpaceVim.d/ 这两个文件夹下编辑自己的脚本，和 SpaceVim 的配置文件。
+SpaceVim 将从 ~/.yh392261226.d/init.vim 和当前目录的 ./SpaceVim.d/init.vim 载入配置，并且更新 rtp，用户可以在 ~/.yh392261226.d/ 和 .SpaceVim.d/ 这两个文件夹下编辑自己的脚本，和 SpaceVim 的配置文件。
 
 示例：
 
 ```vim
 " Here are some basic customizations,
-" please refer to the ~/.SpaceVim.d/init.vim
+" please refer to the ~/.yh392261226.d/init.vim
 " file for all possible options:
 let g:spacevim_default_indent = 3
 let g:spacevim_max_column     = 80

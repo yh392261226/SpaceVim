@@ -92,7 +92,7 @@ function! s:install_manager() abort
                 let g:spacevim_vim_plug_installed = 1
             endif
         endif
-        exec 'set runtimepath+=~/.cache/vim-plug/'
+        exec 'set runtimepath+=~/.yh392261226/vim-plug/'
     endif
 endf
 
@@ -208,7 +208,7 @@ function! SpaceVim#plugins#manager#update(...) abort
             elseif reponame ==# 'SpaceVim'
                 let repo = {
                             \ 'name' : 'SpaceVim',
-                            \ 'path' : expand('~/.SpaceVim')
+                            \ 'path' : expand('~/.yh392261226')
                             \ }
                 call s:pull(repo)
 
@@ -258,7 +258,7 @@ function! s:on_pull_exit(id, data, event) abort
         if name ==# 'SpaceVim'
             let repo = {
                         \ 'name' : 'SpaceVim',
-                        \ 'path' : expand('~/.SpaceVim')
+                        \ 'path' : expand('~/.yh392261226')
                         \ }
         else
             let repo = dein#get(name)

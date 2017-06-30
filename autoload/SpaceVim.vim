@@ -17,8 +17,8 @@
 
 ""
 " @section CONFIGURATION, config
-" SpaceVim uses `~/.SpaceVim.d/init.vim` as its default global config file.
-" You can set all the SpaceVim options and layers in it. `~/.SpaceVim.d/` will
+" SpaceVim uses `~/.yh392261226.d/init.vim` as its default global config file.
+" You can set all the SpaceVim options and layers in it. `~/.yh392261226.d/` will
 " also be added to runtimepath, so you can write your own scripts in it.
 " SpaceVim also supports local config for each project. Place local config 
 " settings in `.SpaceVim.d/init.vim` in the root directory of your project.
@@ -421,7 +421,7 @@ function! SpaceVim#loadCustomConfig() abort
   let custom_confs_old = SpaceVim#util#globpath(getcwd(), '.local.vim')
   let custom_confs = SpaceVim#util#globpath(getcwd(), '.SpaceVim.d/init.vim')
   let custom_glob_conf_old = expand('~/.local.vim')
-  let custom_glob_conf = expand('~/.SpaceVim.d/init.vim')
+  let custom_glob_conf = expand('~/.yh392261226.d/init.vim')
 
   if has('timers')
     if !filereadable(custom_glob_conf_old) && !filereadable(custom_glob_conf)
@@ -446,14 +446,14 @@ function! SpaceVim#loadCustomConfig() abort
     endif
     exe 'source ' . custom_confs[0]
     if filereadable(custom_glob_conf) && g:spacevim_force_global_config
-      if isdirectory(expand('~/.SpaceVim.d/'))
-        set runtimepath^=~/.SpaceVim.d
+      if isdirectory(expand('~/.yh392261226.d/'))
+        set runtimepath^=~/.yh392261226.d
       endif
       exe 'source ' . custom_glob_conf
     endif
   elseif filereadable(custom_glob_conf)
-    if isdirectory(expand('~/.SpaceVim.d/'))
-      set runtimepath^=~/.SpaceVim.d
+    if isdirectory(expand('~/.yh392261226.d/'))
+      set runtimepath^=~/.yh392261226.d
     endif
     exe 'source ' . custom_glob_conf
   endif
@@ -580,7 +580,7 @@ endfunction
 "   plugin. It is hard to manage with a plugin manager.
 "
 "   Step 1: Add `let g:spacevim_enable_ycm = 1` to custom_config. By default
-"   it should be `~/.SpaceVim.d/init.vim`.
+"   it should be `~/.yh392261226.d/init.vim`.
 "
 "   Step 2: Get into the directory of YouCompleteMe's author. By default it
 "   should be `~/.cache/vimfiles/repos/github.com/Valloric/`. If you find the
@@ -598,7 +598,7 @@ endfunction
 "   SpaceVim uses neosnippet as the default snippet engine. If you want to add
 "   a snippet for a vim filetype, open a vim file and run `:NeoSnippetEdit`
 "   command. A buffer will be opened and you can add your custom snippet. 
-"   By default this buffer will be save in `~/.SpaceVim/snippets`. 
+"   By default this buffer will be save in `~/.yh392261226/snippets`. 
 "   If you want to use another directory:
 "
 "   let g:neosnippet#snippets_directory = '~/path/to/snip_dir'
@@ -616,7 +616,7 @@ endfunction
 "
 " 4. How to use `<space>` as `<leader>`?
 " >
-"   Add `let mapleader = "\<space>"` to `~/.SpaceVim.d/init.vim`
+"   Add `let mapleader = "\<space>"` to `~/.yh392261226.d/init.vim`
 " <
 
 

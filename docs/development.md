@@ -209,7 +209,7 @@ If you are contributing to an already existing layer, you should not modify any 
 
 Mappings are an important part of SpaceVim.
 
-First if you want to have some personal mappings, This can be done in your `~/.SpaceVim.d/init.vim` file.
+First if you want to have some personal mappings, This can be done in your `~/.yh392261226.d/init.vim` file.
 
 If you think it worth contributing a new mappings then be sure to read the documentation to find the best mappings, then create a Pull-Request with your changes.
 

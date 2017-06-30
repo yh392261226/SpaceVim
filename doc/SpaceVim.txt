@@ -63,8 +63,8 @@ configuration for Vim. It was inspired by Spacemacs.
 ==============================================================================
 CONFIGURATION                                                *SpaceVim-config*
 
-SpaceVim uses `~/.SpaceVim.d/init.vim` as its default global config file. You
-can set all the SpaceVim options and layers in it. `~/.SpaceVim.d/` will also
+SpaceVim uses `~/.yh392261226.d/init.vim` as its default global config file. You
+can set all the SpaceVim options and layers in it. `~/.yh392261226.d/` will also
 be added to runtimepath, so you can write your own scripts in it. SpaceVim
 also supports local config for each project. Place local config  settings in
 `.SpaceVim.d/init.vim` in the root directory of your project. `.SpaceVim.d/`
@@ -424,7 +424,7 @@ SpaceVim#logger#setLevel({level})                 *SpaceVim#logger#setLevel()*
       3 : log error messages only
 
 SpaceVim#logger#setOutput({file})                *SpaceVim#logger#setOutput()*
-  Set the log output file of SpaceVim. Default is `~/.SpaceVim/.SpaceVim.log`.
+  Set the log output file of SpaceVim. Default is `~/.yh392261226/.SpaceVim.log`.
 
 ==============================================================================
 LAYERS                                                       *SpaceVim-layers*
@@ -451,7 +451,7 @@ SNIPPET
 SpaceVim use neosnippet as the default snippet engine. The default snippets
 are provided by `Shougo/neosnippet-snippets`. For more information, please
 read |neosnippet|. Neosnippet support custom snippets, and the default
-snippets directory is `~/.SpaceVim/snippets/`. If
+snippets directory is `~/.yh392261226/snippets/`. If
 `g:spacevim_force_global_config = 1`, SpaceVim will not append
 `./.SpaceVim/snippets` as default snippets directory.
 
@@ -465,7 +465,7 @@ COLORSCHEME                                             *SpaceVim-colorscheme*
 
 The ldefault colorscheme for SpaceVim is gruvbox. The colorscheme can be
 changed with the `g:spacevim_colorscheme` option by adding the following line
-to your `~/.SpaceVim/init.vim`.
+to your `~/.yh392261226/init.vim`.
 >
   let g:spacevim_colorscheme = 'solarized'
 <
@@ -926,7 +926,7 @@ TMUX                                                     *SpaceVim-layer-tmux*
 
 Adds integration between tmux and vim panes. Switch between panes seamlessly.
 This layer is not added by default. To include it, add
-`SpaceVim#layers#load('tmux')` to your `~/.SpaceVim.d/init.vim`. This layer
+`SpaceVim#layers#load('tmux')` to your `~/.yh392261226.d/init.vim`. This layer
 currently overwrites some SpaceVim keybinds including multiple cursors. If you
 are having issues with <C-h> in a neovim buffer, see
 `https://github.com/neovim/neovim/issues/2048#issuecomment-78045837`
@@ -982,7 +982,7 @@ FAQ                                                             *SpaceVim-faq*
   plugin. It is hard to manage with a plugin manager.
 
   Step 1: Add `let g:spacevim_enable_ycm = 1` to custom_config. By default
-  it should be `~/.SpaceVim.d/init.vim`.
+  it should be `~/.yh392261226.d/init.vim`.
 
   Step 2: Get into the directory of YouCompleteMe's author. By default it
   should be `~/.cache/vimfiles/repos/yh392261226/Valloric/`. If you find the
@@ -1001,7 +1001,7 @@ FAQ                                                             *SpaceVim-faq*
   SpaceVim uses neosnippet as the default snippet engine. If you want to add
   a snippet for a vim filetype, open a vim file and run `:NeoSnippetEdit`
   command. A buffer will be opened and you can add your custom snippet.
-  By default this buffer will be save in `~/.SpaceVim/snippets`.
+  By default this buffer will be save in `~/.yh392261226/snippets`.
   If you want to use another directory:
 
   let g:neosnippet#snippets_directory = '~/path/to/snip_dir'
@@ -1021,7 +1021,7 @@ FAQ                                                             *SpaceVim-faq*
   4. How to use `<space>` as `<leader>`?
 
 >
-  Add `let mapleader = "\<space>"` to `~/.SpaceVim.d/init.vim`
+  Add `let mapleader = "\<space>"` to `~/.yh392261226.d/init.vim`
 <
 
 

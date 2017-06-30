@@ -3,4 +3,4 @@ let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsExpandTrigger='<tab>'
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsJumpForwardTrigger='<tab>'
-let g:UltiSnipsSnippetsDir = '~/.SpaceVim.d/UltiSnips'
+let g:UltiSnipsSnippetsDir = '~/.yh392261226.d/UltiSnips'

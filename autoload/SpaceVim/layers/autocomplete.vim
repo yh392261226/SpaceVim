@@ -15,7 +15,7 @@
 " SpaceVim use neosnippet as the default snippet engine. The default snippets
 " are provided by `Shougo/neosnippet-snippets`. For more information, please read
 " |neosnippet|. Neosnippet support custom snippets, and the default snippets
-" directory is `~/.SpaceVim/snippets/`. If `g:spacevim_force_global_config = 1`,
+" directory is `~/.yh392261226/snippets/`. If `g:spacevim_force_global_config = 1`,
 " SpaceVim will not append `./.SpaceVim/snippets` as default snippets directory.
 
 

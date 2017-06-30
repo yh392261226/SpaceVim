@@ -12,3 +12,4 @@ docs/_site/*
 docs/Gemfile.lock
 set_to_my_symlink
 fromurl
+vimbundlefiles/

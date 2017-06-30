@@ -106,14 +106,14 @@ The `core#statusline` layer provide a heavily customized powerline with the foll
 
 ### Quick start guide
 
-SpaceVim load custom configuration from `~/.SpaceVim.d/init.vim`,
+SpaceVim load custom configuration from `~/.yh392261226.d/init.vim`,
 
-:warning: It is not `~/.SpaceVim/init.vim`, user should not change anything in `~/.SpaceVim/`.
+:warning: It is not `~/.yh392261226/init.vim`, user should not change anything in `~/.yh392261226/`.
 
 here is an example:
 
 ```vim
-" Here are some basic customizations, please refer to the ~/.SpaceVim.d/init.vim
+" Here are some basic customizations, please refer to the ~/.yh392261226.d/init.vim
 " file for all possible options:
 let g:spacevim_default_indent = 3
 let g:spacevim_max_column     = 80

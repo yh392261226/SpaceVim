@@ -102,7 +102,7 @@ endfunction
 
 ""
 " @public
-" Set the log output file of SpaceVim. Default is `~/.SpaceVim/.SpaceVim.log`.
+" Set the log output file of SpaceVim. Default is `~/.yh392261226/.SpaceVim.log`.
 function! SpaceVim#logger#setOutput(file) abort
   let s:logger_file = a:file
 endfunction

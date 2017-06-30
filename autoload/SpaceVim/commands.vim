@@ -62,7 +62,7 @@ endfunction
 
 function! SpaceVim#commands#config(...) abort
   if (a:0 > 0 && a:1 ==# '-g') || a:0 == 0
-    tabnew ~/.SpaceVim.d/init.vim
+    tabnew ~/.yh392261226.d/init.vim
   elseif  a:0 > 0 && a:1 ==# '-l'
     tabnew .SpaceVim.d/init.vim
   endif
@@ -210,7 +210,7 @@ function! s:check_features(features) abort
 endfunction
 
 function! s:SHA() abort
-  return system('git --no-pager -C ~/.SpaceVim  log -n 1 --oneline')[:7]
+  return system('git --no-pager -C ~/.yh392261226  log -n 1 --oneline')[:7]
 endfunction
 
 
