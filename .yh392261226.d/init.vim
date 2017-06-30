@@ -17,9 +17,26 @@ call SpaceVim#layers#load('lang#swig')
 call SpaceVim#layers#load('lang#tmux')
 call SpaceVim#layers#load('lang#vim')
 call SpaceVim#layers#load('lang#xml')
-call SpaceVim#layers#load('shell')   
+call SpaceVim#layers#load('shell')
 call SpaceVim#layers#load('tools#screensaver')
+call SpaceVim#layers#load('ui')
+let g:spacevim_plugin_groups = ['web', 'lang', 'edit', 'ui', 'tools', 'checkers', 'format', 'chat', 'git', 'javascript', 'ruby', 'python', 'scala', 'lang#go', 'lang#markdown', 'scm', 'editing', 'indents', 'navigation', 'misc', 'core', 'core#statusline', 'core#tabline', 'default', 'unite', 'github', 'denite', 'ctrlp', 'autocomplete', 'nvim', 'osx', 'lang#rust', 'lang#python', 'lang#kotlin', 'lang#html5', 'colorscheme', 'core#banner']
+let g:spacevim_smartcloseignoreft = ['help', 'tagbar', 'vimfiler']
+let g:spacevim_enable_powerline_fonts = 1
+let g:spacevim_wildignore = '*/tmp/*,*.so,*.swp,*.zip,*.class,tags,*.jpg,*.ttf,*.TTF,*.png,*/target/*,.git,.svn,.hg,.DS_Store,*.svg'
+let g:spacevim_altmoveignoreft = ['Tagbar', 'vimfiler']
+let g:spacevim_leader_guide_submode_mappings = {'<C-C>': 'win_close'}
+let g:spacevim_enable_vimfiler_gitstatus = 1
+let g:spacevim_vim_help_language = 'cn'
+let g:spacevim_sidebar_width = 30
+let g:spacevim_enable_cursorline = 1
+let g:spacevim_enable_googlesuggest = 1
+let g:spacevim_max_column = 80
+let g:spacevim_leader_guide_run_map_on_popup = 1
+let g:spacevim_default_indent = 4
+let g:spacevim_enable_guicolors = 1
 let g:spacevim_enable_vimfiler_welcome = 1
+let g:spacevim_realtime_leader_guide = 1
 let g:spacevim_enable_debug = 1
 let g:deoplete#auto_complete_delay = 150
 let g:spacevim_enable_tabline_filetype_icon = 1
@@ -34,3 +51,4 @@ let g:clang2_placeholder_next = ''
 let g:clang2_placeholder_prev = ''
 let g:spacevim_plugin_bundle_dir = '~/.yh392261226/vimbundlefiles/'
 
+let g:spacevim_custom_plugins=[]
