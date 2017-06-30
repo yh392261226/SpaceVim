@@ -55,7 +55,7 @@ function! s:install_manager() abort
     elseif g:spacevim_plugin_manager ==# 'dein'
         "auto install dein
         if filereadable(expand(g:spacevim_plugin_bundle_dir)
-                    \ . join(['repos', 'github.com',
+                    \ . join(['repos', 'yh392261226',
                     \ 'Shougo', 'dein.vim', 'README.md'],
                     \ s:Fsep))
             let g:spacevim_dein_installed = 1
@@ -66,14 +66,14 @@ function! s:install_manager() abort
                             \ 'clone',
                             \ 'https://github.com/Shougo/dein.vim',
                             \ expand(g:spacevim_plugin_bundle_dir)
-                            \ . join(['repos', 'github.com',
+                            \ . join(['repos', 'yh392261226',
                             \ 'Shougo', 'dein.vim"'], s:Fsep)
                             \ ])
                 let g:spacevim_dein_installed = 1
             endif
         endif
         exec 'set runtimepath+='. fnameescape(g:spacevim_plugin_bundle_dir)
-                    \ . join(['repos', 'github.com', 'Shougo',
+                    \ . join(['repos', 'yh392261226', 'Shougo',
                     \ 'dein.vim'], s:Fsep)
     elseif g:spacevim_plugin_manager ==# 'vim-plug'
         "auto install vim-plug
