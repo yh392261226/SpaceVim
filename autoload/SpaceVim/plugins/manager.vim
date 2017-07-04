@@ -359,6 +359,7 @@ function! s:pull(repo) abort
     let argv = ['git', '-C', a:repo.path, 'pull']
     if s:JOB.vim_job || s:JOB.nvim_job
         let jobid = s:JOB.start(argv,{
+                    \ 'on_stderr' : function('s:on_install_stdout'),
                     \ 'on_exit' : function('s:on_pull_exit')
                     \ })
         if jobid != 0
