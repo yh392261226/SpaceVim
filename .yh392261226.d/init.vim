@@ -50,5 +50,5 @@ endif
 let g:clang2_placeholder_next = ''
 let g:clang2_placeholder_prev = ''
 let g:spacevim_plugin_bundle_dir = '~/.yh392261226/vimbundlefiles/'
-
+let g:spacevim_plugin_manager = 'vim-plug'  " neobundle or dein or vim-plug
 let g:spacevim_custom_plugins=[]
