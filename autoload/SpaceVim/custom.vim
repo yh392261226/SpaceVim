@@ -1,3 +1,11 @@
+"=============================================================================
+" custom.vim --- custom API in SpaceVim
+" Copyright (c) 2016-2017 Wang Shidong & Contributors
+" Author: Wang Shidong < wsdjeg at 163.com >
+" URL: https://spacevim.org
+" License: GPLv3
+"=============================================================================
+
 function! SpaceVim#custom#profile(dict) abort
     for key in keys(a:dict)
         call s:set(key, a:dict[key])
@@ -32,14 +40,14 @@ endfunction
 
 function! s:awesome_mode() abort
     let sep = SpaceVim#api#import('file').separator
-    let f = fnamemodify(g:Config_Main_Home, ':h') . join(['', 'mode', 'dark_powered.vim'], sep)
+    let f = fnamemodify(g:_spacevim_root_dir, ':h') . join(['', 'mode', 'dark_powered.vim'], sep)
     let config = readfile(f, '')
     call s:write_to_config(config)
 endfunction
 
 function! s:basic_mode() abort
     let sep = SpaceVim#api#import('file').separator
-    let f = fnamemodify(g:Config_Main_Home, ':h') . join(['', 'mode', 'basic.vim'], sep)
+    let f = fnamemodify(g:_spacevim_root_dir, ':h') . join(['', 'mode', 'basic.vim'], sep)
     let config = readfile(f, '')
     call s:write_to_config(config)
 endfunction
@@ -54,6 +62,11 @@ function! s:write_to_config(config) abort
     endif
     call writefile(a:config, cf, '')
 endfunction
+
 function! SpaceVim#custom#SPC(m, keys, cmd, desc, is_cmd) abort
     call add(g:_spacevim_mappings_space_custom,[a:m, a:keys, a:cmd, a:desc, a:is_cmd])
+endfunction
+
+function! SpaceVim#custom#SPCGroupName(keys, name) abort
+  call add(g:_spacevim_mappings_space_custom_group_name, [a:keys, a:name])
 endfunction

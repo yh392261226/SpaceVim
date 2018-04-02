@@ -1,9 +1,9 @@
 "=============================================================================
-" guide.vim --- mappings guide helper for SpaceVim
-" Copyright (c) 2016-2017 Shidong Wang & Contributors
-" Author: Shidong Wang < wsdjeg at 163.com >
+" guide.vim --- key binding guide for SpaceVim
+" Copyright (c) 2016-2017 Wang Shidong & Contributors
+" Author: Wang Shidong < wsdjeg at 163.com >
 " URL: https://spacevim.org
-" License: MIT license
+" License: GPLv3
 "=============================================================================
 
 let s:save_cpo = &cpo
@@ -101,10 +101,10 @@ function! s:start_parser(key, dict) " {{{
       continue
     endif
     let mapd.display = s:format_displaystring(mapd.rhs)
-    let mapd.lhs = substitute(mapd.lhs, key, "", "")
-    let mapd.lhs = substitute(mapd.lhs, "<Space>", " ", "g")
-    let mapd.lhs = substitute(mapd.lhs, "<Tab>", "<C-I>", "g")
-    let mapd.rhs = substitute(mapd.rhs, "<SID>", "<SNR>".mapd['sid']."_", "g")
+    let mapd.lhs = substitute(mapd.lhs, key, '', '')
+    let mapd.lhs = substitute(mapd.lhs, '<Space>', ' ', 'g')
+    let mapd.lhs = substitute(mapd.lhs, '<Tab>', '<C-I>', 'g')
+    let mapd.rhs = substitute(mapd.rhs, '<SID>', '<SNR>'.mapd['sid'].'_', 'g')
     if mapd.lhs != '' && mapd.display !~# 'LeaderGuide.*'
       let mapd.lhs = s:string_to_keys(mapd.lhs)
       if (visual && match(mapd.mode, "[vx ]") >= 0) ||
@@ -190,13 +190,17 @@ function! s:escape_mappings(mapping) " {{{
 endfunction " }}}
 function! s:string_to_keys(input) " {{{
   " Avoid special case: <>
+  let retlist = []
   if match(a:input, '<.\+>') != -1
-    let retlist = []
     let si = 0
     let go = 1
     while si < len(a:input)
       if go
-        call add(retlist, a:input[si])
+        if a:input[si] ==# ' '
+          call add(retlist, '[SPC]')
+        else
+          call add(retlist, a:input[si])
+        endif
       else
         let retlist[-1] .= a:input[si]
       endif
@@ -207,10 +211,16 @@ function! s:string_to_keys(input) " {{{
       end
       let si += 1
     endw
-    return retlist
   else
-    return split(a:input, '\zs')
+    for it in split(a:input, '\zs')
+      if it ==# ' '
+        call add(retlist, '[SPC]')
+      else
+        call add(retlist, it)
+      endif
+    endfor
   endif
+  return retlist
 endfunction " }}}
 function! s:escape_keys(inp) " {{{
   let ret = substitute(a:inp, "<", "<lt>", "")
@@ -299,6 +309,43 @@ function! s:create_string(layout) " {{{
   return output
 endfunction " }}}
 
+let s:VIMH = SpaceVim#api#import('vim#highlight')
+function! s:highlight_cursor() abort
+  let info = {
+        \ 'name' : 'SpaceVimGuideCursor',
+        \ 'guibg' : synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'guifg'),
+        \ 'guifg' : synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'guibg'),
+        \ 'ctermbg' : synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'ctermfg'),
+        \ 'ctermfg' : synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'ctermbg'),
+        \ }
+  hi def link SpaceVimGuideCursor Cursor
+  call s:VIMH.hi(info)
+  if s:vis == 'gv'
+    " [bufnum, lnum, col, off]
+    let begin = getpos("'<")
+    let end = getpos("'>")
+    if begin[1] == end[1]
+      let s:cursor_hi = matchaddpos('SpaceVimGuideCursor', [[begin[1], min([begin[2], end[2]]), abs(begin[2] - end[2]) + 1]]) 
+    else
+      let pos = [[begin[1], begin[2], len(getline(begin[1])) - begin[2] + 1],
+            \ [end[1], 1, end[2]],
+            \ ]
+      for lnum in range(begin[1] + 1, end[1] - 1)
+        call add(pos, [lnum, 1, len(getline(lnum))])
+      endfor
+      let s:cursor_hi = matchaddpos('SpaceVimGuideCursor', pos) 
+    endif
+  else
+    let s:cursor_hi = matchaddpos('SpaceVimGuideCursor', [[line('.'), col('.'), 1]]) 
+  endif
+endfunction
+
+function! s:remove_cursor_highlight() abort
+  try
+    call matchdelete(s:cursor_hi)
+  catch
+  endtry
+endfunction
 
 " @vimlint(EVL102, 1, l:string)
 function! s:start_buffer() " {{{
@@ -377,6 +424,7 @@ function! s:winopen() " {{{
   if !exists('s:bufnr')
     let s:bufnr = -1
   endif
+  call s:highlight_cursor()
   let pos = g:leaderGuide_position ==? 'topleft' ? 'topleft' : 'botright'
   if bufexists(s:bufnr)
     let qfbuf = &buftype ==# 'quickfix'
@@ -401,6 +449,7 @@ function! s:winopen() " {{{
   setlocal nocursorline nocursorcolumn colorcolumn=
   setlocal winfixwidth winfixheight
   call s:updateStatusline()
+  call s:toggle_hide_cursor()
 endfunction " }}}
 
 function! s:updateStatusline() abort
@@ -410,12 +459,14 @@ function! s:updateStatusline() abort
     let gname = ' - ' . gname[1:]
     let gname = substitute(gname,' ', '\\ ', 'g')
   endif
+  let keys = get(s:, 'prefix_key_inp', '')
+  let keys = substitute(keys, '\', '\\\', 'g')
   exe 'setlocal statusline=%#LeaderGuiderPrompt#\ Guide:\ ' .
-        \ '%#LeaderGuiderSep1#' .
+        \ '%#LeaderGuiderSep1#' . s:lsep .
         \ '%#LeaderGuiderName#\ ' .
         \ SpaceVim#mapping#leader#getName(s:prefix_key)
-        \ . get(s:, 'prefix_key_inp', '') . gname
-        \ . '\ %#LeaderGuiderSep2#%#LeaderGuiderFill#'
+        \ . keys . gname
+        \ . '\ %#LeaderGuiderSep2#' . s:lsep . '%#LeaderGuiderFill#'
         \ . s:guide_help_msg()
 endfunction
 
@@ -428,7 +479,16 @@ function! s:guide_help_msg() abort
   return substitute(msg,' ', '\\ ', 'g')
 endfunction
 
+let s:t_ve = ''
+function! s:toggle_hide_cursor() abort
+  let t_ve = &t_ve
+  let &t_ve = s:t_ve
+  let s:t_ve = t_ve
+endfunction
+
+
 function! s:winclose() " {{{
+  call s:toggle_hide_cursor()
   noautocmd execute s:gwin.'wincmd w'
   if s:gwin == winnr()
     noautocmd close
@@ -438,6 +498,7 @@ function! s:winclose() " {{{
     noautocmd execute s:winnr.'wincmd w'
     call winrestview(s:winv)
   endif
+  call s:remove_cursor_highlight()
 endfunction " }}}
 function! s:page_down() " {{{
   call feedkeys("\<c-c>", "n")
@@ -512,6 +573,9 @@ function! s:get_register() "{{{
   return clip
 endfunction "}}}
 function! SpaceVim#mapping#guide#start_by_prefix(vis, key) " {{{
+  if a:key == ' ' && exists('b:spacevim_lang_specified_mappings')
+    let g:_spacevim_mappings_space.l = b:spacevim_lang_specified_mappings
+  endif
   let s:guide_help_mode = 0
   let s:vis = a:vis ? 'gv' : ''
   let s:count = v:count != 0 ? v:count : ''
@@ -560,24 +624,27 @@ if get(g:, 'mapleader', '\') == ' '
 else
   call SpaceVim#mapping#guide#register_prefix_descriptions('\',
         \ 'g:_spacevim_mappings')
+  call SpaceVim#plugins#help#regist_root({'<leader>' : g:_spacevim_mappings})
   call SpaceVim#mapping#guide#register_prefix_descriptions(' ',
         \ 'g:_spacevim_mappings_space')
+  call SpaceVim#plugins#help#regist_root({'SPC' : g:_spacevim_mappings_space})
 endif
 call SpaceVim#mapping#guide#register_prefix_descriptions(
-      \ g:spacevim_unite_leader,
-      \ 'g:_spacevim_mappings_unite')
-call SpaceVim#mapping#guide#register_prefix_descriptions(
-      \ g:spacevim_denite_leader,
-      \ 'g:_spacevim_mappings_denite')
+      \ g:spacevim_windows_leader,
+      \ 'g:_spacevim_mappings_windows')
+call SpaceVim#plugins#help#regist_root({'[WIN]' : g:_spacevim_mappings_windows})
 call SpaceVim#mapping#guide#register_prefix_descriptions(
       \ '[KEYs]',
       \ 'g:_spacevim_mappings_prefixs')
 call SpaceVim#mapping#guide#register_prefix_descriptions(
       \ 'g',
       \ 'g:_spacevim_mappings_g')
+call SpaceVim#plugins#help#regist_root({'[g]' : g:_spacevim_mappings_g})
 call SpaceVim#mapping#guide#register_prefix_descriptions(
       \ 'z',
       \ 'g:_spacevim_mappings_z')
+call SpaceVim#plugins#help#regist_root({'[z]' : g:_spacevim_mappings_z})
+let [s:lsep, s:rsep] = SpaceVim#layers#core#statusline#rsep()
 let &cpo = s:save_cpo
 unlet s:save_cpo
 

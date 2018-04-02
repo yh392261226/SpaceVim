@@ -1,3 +1,11 @@
+"=============================================================================
+" dict.vim --- SpaceVim dict API
+" Copyright (c) 2016-2017 Wang Shidong & Contributors
+" Author: Wang Shidong < wsdjeg at 163.com >
+" URL: https://spacevim.org
+" License: GPLv3
+"=============================================================================
+
 function! SpaceVim#api#data#dict#get() abort
   return map({
         \ 'make' : '',
@@ -10,9 +18,18 @@ function! SpaceVim#api#data#dict#get() abort
         \ 'min_by' : '',
         \ 'foldl' : '',
         \ 'foldr' : '',
+        \ 'entrys' : '',
         \ },
         \ "function('s:' . v:key)"
         \ )
+endfunction
+
+function! s:entrys(dict) abort
+  let entrys = []
+  for key in keys(a:dict)
+    call add(entrys, {key : a:dict[key]})
+  endfor
+  return entrys
 endfunction
 
 function! s:make(keys, values, ...) abort

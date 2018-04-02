@@ -3,7 +3,7 @@
 " Copyright (c) 2012-2016 Shidong Wang & Contributors
 " Author: Shidong Wang < wsdjeg at 163.com >
 " URL: https://spacevim.org
-" License: MIT license
+" License: GPLv3
 "=============================================================================
 
 ""
@@ -19,5 +19,5 @@ function! SpaceVim#layers#format#plugins() abort
 endfunction
 
 function! SpaceVim#layers#format#config() abort
-  call SpaceVim#mapping#space#def('nnoremap', ['b', 'f'], 'Neoformat', 'format-codo', 1)
+  call SpaceVim#mapping#space#def('nnoremap', ['b', 'f'], 'Neoformat', 'format-code', 1)
 endfunction

@@ -3,7 +3,7 @@
 " Copyright (c) 2016-2017 Shidong Wang & Contributors
 " Author: Shidong Wang < wsdjeg at 163.com >
 " URL: https://spacevim.org
-" License: MIT license
+" License: GPLv3
 "=============================================================================
 
 "autocmds
@@ -18,7 +18,6 @@ function! SpaceVim#autocmds#init() abort
     autocmd FileType jsp call JspFileTypeInit()
     autocmd QuitPre * call SpaceVim#plugins#windowsmanager#UpdateRestoreWinInfo()
     autocmd WinEnter * call SpaceVim#plugins#windowsmanager#MarkBaseWin()
-    autocmd FileType html,css,jsp EmmetInstall
     autocmd BufRead,BufNewFile *.pp setfiletype puppet
     if g:spacevim_enable_cursorline == 1
       autocmd BufEnter,WinEnter,InsertLeave * setl cursorline
@@ -28,6 +27,7 @@ function! SpaceVim#autocmds#init() abort
       autocmd BufEnter,WinEnter,InsertLeave * setl cursorcolumn
       autocmd BufLeave,WinLeave,InsertEnter * setl nocursorcolumn
     endif
+    autocmd WinLeave * call SpaceVim#layers#core#statusline#remove_section('search status')
     autocmd BufReadPost *
           \ if line("'\"") > 0 && line("'\"") <= line("$") |
           \   exe "normal! g`\"" |
@@ -41,31 +41,14 @@ function! SpaceVim#autocmds#init() abort
     autocmd FileType cs set comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,f:///,f://
     autocmd FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
     autocmd FileType lua set comments=f:--
-    autocmd FileType vim setlocal foldmethod=marker
-    autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-    autocmd Filetype html setlocal omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
     autocmd FileType xml call XmlFileTypeInit()
     autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
     autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-    autocmd BufEnter *
-          \   if empty(&buftype) && has('nvim') && &filetype != 'help'
-          \|      nnoremap <silent><buffer> <C-]> :call MyTagfunc()<CR>
-          \|      nnoremap <silent><buffer> <C-[> :call MyTagfuncBack()<CR>
-          \|  else
-            \|    if empty(maparg('<leader>[', 'n', 0, 1)) && empty(maparg('<leader>]', 'n', 0, 1))
-            \|       nnoremap <silent><buffer> <leader>] :call MyTagfunc()<CR>
-            \|       nnoremap <silent><buffer> <leader>[ :call MyTagfuncBack()<CR>
-            \|    endif
-            \|  endif
-    "}}}
+    autocmd Filetype qf setlocal nobuflisted
     autocmd FileType python,coffee call zvim#util#check_if_expand_tab()
-    " Instead of reverting the cursor to the last position in the buffer, we
-    " set it to the first line when editing a git commit message
-    au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
+    au StdinReadPost * call s:disable_welcome()
     autocmd InsertEnter * call s:fixindentline()
+    autocmd BufEnter,FileType * call SpaceVim#mapping#space#refrashLSPC()
     if executable('synclient') && g:spacevim_auto_disable_touchpad
       let s:touchpadoff = 0
       autocmd InsertEnter * call s:disable_touchpad()
@@ -74,8 +57,12 @@ function! SpaceVim#autocmds#init() abort
       autocmd FocusGained * call s:reload_touchpad_status()
     endif
     autocmd BufWritePost *.vim call s:generate_doc()
-    autocmd ColorScheme gruvbox call s:fix_gruvbox()
+    autocmd ColorScheme * call SpaceVim#api#import('vim#highlight').hide_in_normal('EndOfBuffer')
+    autocmd ColorScheme gruvbox,jellybeans,nord call s:fix_VertSplit()
     autocmd VimEnter * call SpaceVim#autocmds#VimEnter()
+    autocmd BufEnter * let b:_spacevim_project_name = get(g:, '_spacevim_project_name', '')
+    autocmd SessionLoadPost * let g:_spacevim_session_loaded = 1
+    autocmd VimLeavePre * call SpaceVim#plugins#manager#terminal()
   augroup END
 endfunction
 
@@ -112,30 +99,61 @@ function! s:generate_doc() abort
   endif
 endfunction
 
-function! s:fix_gruvbox() abort
+function! s:fix_VertSplit() abort
   if &background ==# 'dark'
-    hi VertSplit guibg=#282828 guifg=#181A1F
-    "hi EndOfBuffer guibg=#282828 guifg=#282828
+    if g:colors_name ==# 'gruvbox'
+      hi VertSplit guibg=#282828 guifg=#181A1F
+    elseif g:colors_name ==# 'jellybeans'
+      hi VertSplit guibg=#151515 guifg=#080808
+    elseif g:colors_name ==# 'nord'
+      hi VertSplit guibg=#2E3440 guifg=#262626
+    endif
   else
-    hi VertSplit guibg=#fbf1c7 guifg=#e7e9e1
-    "hi EndOfBuffer guibg=#fbf1c7 guifg=#fbf1c7
+    if g:colors_name ==# 'gruvbox'
+      hi VertSplit guibg=#fbf1c7 guifg=#e7e9e1
+    endif
   endif
   hi SpaceVimLeaderGuiderGroupName cterm=bold ctermfg=175 gui=bold guifg=#d3869b
 endfunction
+
 function! SpaceVim#autocmds#VimEnter() abort
   call SpaceVim#api#import('vim#highlight').hide_in_normal('EndOfBuffer')
+  for argv in g:_spacevim_mappings_space_custom_group_name
+    if len(argv[0]) == 1
+      if !has_key(g:_spacevim_mappings_space, argv[0][0])
+        let g:_spacevim_mappings_space[argv[0][0]] = {'name' : argv[1]}
+      endif
+    elseif len(argv[0]) == 2
+      if !has_key(g:_spacevim_mappings_space, argv[0][0])
+        let g:_spacevim_mappings_space[argv[0][0]] = {'name' : '+Unnamed',
+              \ argv[0][1] : { 'name' : argv[1]},
+              \ }
+      else
+        if !has_key(g:_spacevim_mappings_space[argv[0][0]], argv[0][1])
+          let g:_spacevim_mappings_space[argv[0][0]][argv[0][1]] = {'name' : argv[1]}
+        endif
+      endif
+    endif
+  endfor
   for argv in g:_spacevim_mappings_space_custom
     call call('SpaceVim#mapping#space#def', argv)
   endfor
-  if get(g:, '_spacevim_statusline_loaded', 0) == 1
+  if SpaceVim#layers#isLoaded('core#statusline')
     set laststatus=2
     call SpaceVim#layers#core#statusline#def_colors()
     setlocal statusline=%!SpaceVim#layers#core#statusline#get(1)
   endif
-  if get(g:, '_spacevim_tabline_loaded', 0) == 1
+  if SpaceVim#layers#isLoaded('core#tabline')
     call SpaceVim#layers#core#tabline#def_colors()
     set showtabline=2
   endif
+  call SpaceVim#plugins#projectmanager#RootchandgeCallback()
+endfunction
+
+function! s:disable_welcome() abort
+  augroup SPwelcome
+    au!
+  augroup END
 endfunction
 
 

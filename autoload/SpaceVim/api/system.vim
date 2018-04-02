@@ -1,3 +1,10 @@
+"=============================================================================
+" system.vim --- SpaceVim system API
+" Copyright (c) 2016-2017 Wang Shidong & Contributors
+" Author: Wang Shidong < wsdjeg at 163.com >
+" URL: https://spacevim.org
+" License: GPLv3
+"=============================================================================
 scriptencoding utf-8
 let s:system = {}
 
@@ -47,14 +54,13 @@ let s:system['isDarwin'] = function('s:isDarwin')
 
 function! s:fileformat() abort
   let fileformat = ''
-
   if &fileformat ==? 'dos'
-    let fileformat = ''
+    let fileformat = ''
   elseif &fileformat ==? 'unix'
     if s:isDarwin()
-      let fileformat = ''
+      let fileformat = ''
     else
-      let fileformat = ''
+      let fileformat = ''
     endif
   elseif &fileformat ==? 'mac'
     let fileformat = ''

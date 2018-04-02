@@ -1,4 +1,16 @@
+"=============================================================================
+" mapping.vim --- mapping functions in SpaceVim
+" Copyright (c) 2016-2017 Wang Shidong & Contributors
+" Author: Wang Shidong < wsdjeg at 163.com >
+" URL: https://spacevim.org
+" License: GPLv3
+"=============================================================================
+
 scriptencoding utf-8
+
+let s:BUFFER = SpaceVim#api#import('vim#buffer')
+
+
 let g:unite_source_menu_menus =
       \ get(g:,'unite_source_menu_menus',{})
 let g:unite_source_menu_menus.CustomKeyMaps = {'description':
@@ -75,49 +87,22 @@ function! SpaceVim#mapping#def(type, key, value, ...) abort
   endif
 endfunction
 
-function! SpaceVim#mapping#shift_tab() abort
-  return pumvisible() ? "\<C-p>" : "\<Plug>delimitMateS-Tab"
-endfunction
+if g:spacevim_snippet_engine ==# 'neosnippet'
+  function! SpaceVim#mapping#shift_tab() abort
+    return pumvisible() ? "\<C-p>" : "\<Plug>delimitMateS-Tab"
+  endfunction
+elseif g:spacevim_snippet_engine ==# 'ultisnips'
+  function! SpaceVim#mapping#shift_tab() abort
+    return pumvisible() ? "\<C-p>" : "\<C-R>=UltiSnips#JumpForwards()\<CR>\<C-R>=cmp#ultisnips#JumpForward()\<CR>"
+  endfunction
+endif
 
 function! SpaceVim#mapping#tab() abort
-  if getline('.')[col('.')-2] ==# '{'&& pumvisible()
-    return "\<C-n>"
-  endif
-  if index(g:spacevim_plugin_groups, 'autocomplete') != -1
-    if neosnippet#expandable() && getline('.')[col('.')-2] ==# '(' && !pumvisible()
-      return "\<Plug>(neosnippet_expand)"
-    elseif neosnippet#jumpable()
-          \ && getline('.')[col('.')-2] ==# '(' && !pumvisible() 
-          \ && !neosnippet#expandable()
-      return "\<plug>(neosnippet_jump)"
-    elseif neosnippet#expandable_or_jumpable() && getline('.')[col('.')-2] !=#'('
-      return "\<plug>(neosnippet_expand_or_jump)"
-    elseif pumvisible()
-      return "\<C-n>"
-    else
-      return "\<tab>"
-    endif
-  elseif pumvisible()
-    return "\<C-n>"
-  else
-    return "\<tab>"
-  endif
+  return SpaceVim#mapping#tab#i_tab()
 endfunction
 
 function! SpaceVim#mapping#enter() abort
-  if pumvisible()
-    if getline('.')[col('.') - 2]==# '{'
-      return "\<Enter>"
-    elseif g:spacevim_autocomplete_method ==# 'neocomplete'||g:spacevim_autocomplete_method ==# 'deoplete'
-      return "\<C-y>"
-    else
-      return "\<esc>a"
-    endif
-  elseif getline('.')[col('.') - 2]==#'{'&&getline('.')[col('.')-1]==#'}'
-    return "\<Enter>\<esc>ko"
-  else
-    return "\<Enter>"
-  endif
+  return SpaceVim#mapping#enter#i_enter()
 endfunction
 
 function! SpaceVim#mapping#gd() abort
@@ -166,22 +151,52 @@ endfunction
 function! SpaceVim#mapping#close_current_buffer() abort
   let buffers = get(g:, '_spacevim_list_buffers', [])
   let bn = bufnr('%')
-  let index = index(buffers, bn) 
+  let f = ''
+  if getbufvar(bn, '&modified', 0)
+    redraw
+    echohl WarningMsg
+    echon 'save changes to "' . bufname(bn) . '"?  Yes/No/Cancel'
+    echohl None
+    let rs = nr2char(getchar())
+    if rs ==? 'y'
+      write
+    elseif rs ==? 'n'
+      let f = '!'
+      redraw
+      echohl ModeMsg
+      echon 'discarded!'
+      echohl None
+    else
+      redraw
+      echohl ModeMsg
+      echon 'canceled!'
+      echohl None
+      return
+    endif
+  endif
+
+  if &buftype == 'terminal'
+    exe 'bd!'
+    return
+  endif
+
+  let cmd_close_buf = 'bd' . f
+  let index = index(buffers, bn)
   if index != -1
     if index == 0
       if len(buffers) > 1
         exe 'b' . buffers[1]
-        exe 'bd' . bn
+        exe cmd_close_buf . bn
       else
-        exe 'bd ' . bn
+        exe cmd_close_buf . bn
       endif
     elseif index > 0
       if index + 1 == len(buffers)
         exe 'b' . buffers[index - 1]
-        exe 'bd' . bn
+        exe cmd_close_buf . bn
       else
         exe 'b' . buffers[index + 1]
-        exe 'bd' . bn
+        exe cmd_close_buf . bn
       endif
     endif
   endif
@@ -191,6 +206,10 @@ function! SpaceVim#mapping#close_term_buffer(...) abort
   let buffers = get(g:, '_spacevim_list_buffers', [])
   let abuf = str2nr(g:_spacevim_termclose_abuf)
   let index = index(buffers, abuf)
+  if get(w:, 'shell_layer_win', 0) == 1
+    exe 'bd!' . abuf
+    return
+  endif
   if index != -1
     if index == 0
       if len(buffers) > 1
@@ -232,5 +251,19 @@ function! SpaceVim#mapping#menu(desc, key, cmd) abort
         \ [description ,
         \ a:cmd])
 endfunction
+
+function! SpaceVim#mapping#clear_saved_buffers()
+  call s:BUFFER.filter_do(
+        \ {
+        \ 'expr' : [
+        \ 'buflisted(v:val)',
+        \ 'index(tabpagebuflist(), v:val) == -1',
+        \ 'getbufvar(v:val, "&mod") == 0',
+        \ ],
+        \ 'do' : 'bd %d'
+        \ }
+        \ )
+endfunction
+
 
 " vim:set et sw=2 cc=80:
