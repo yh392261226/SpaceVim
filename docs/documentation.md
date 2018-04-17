@@ -317,6 +317,8 @@ the option is `g:spacevim_windows_smartclose`, default value is `q`. If you stil
 
 [Send a PR](http://spacevim.org/development/) to add the differences you found in this section.
 
+If you still want to use this origin function, you can enable vimcompatible mode, via `let g:spacevim_vimcompatible = 1`.
+
 ## Interface elements
 
 SpaceVim has a minimalistic and distraction free UI:
@@ -1553,25 +1555,25 @@ The default color for iedit is `red`/`green` which is based on the current color
 
 `iedit-Normal` mode inherits from `Normal` mode, the following key bindings are specific to `iedit-Normal` mode.
 
-| Key Binding | Description                                                                     |
-| ----------- | ------------------------------------------------------------------------------- |
-| `Esc`       | go back to `Normal` mode                                                        |
-| `i`         | switch to `iedit-Insert` mode, same as `i`                                      |
-| `a`         | switch to `iedit-Insert` mode, same as `a`                                      |
-| `I`         | go to the beginning of the current occurrence and switch to `iedit-Insert` mode |
-| `A`         | go to the end of the current occurrence and switch to `iedit-Insert` mode       |
-| `<Left>`    | Move cursor to left                                                             |
-| `<Right>`   | Move cursor to right                                                            |
-| `0`         | go to the beginning of the current occurrence                                   |
-| `$`         | go to the end of the current occurrence                                         |
-| `D`         | delete the occurrences                                                          |
-| `S`         | delete the occurrences and switch to iedit-Insert mode                          |
-| `gg`        | go to first occurrence                                                          |
-| `G`         | go to last occurrence                                                           |
-| `n`         | go to next occurrence                                                           |
-| `N`         | go to previous occurrence                                                       |
-| `p`         | replace occurrences with last yanked (copied) text                              |
-| `<Tab>`     | toggle current occurrence                                                       |
+| Key Binding   | Description                                                                     |
+| ------------- | ------------------------------------------------------------------------------- |
+| `Esc`         | go back to `Normal` mode                                                        |
+| `i`           | switch to `iedit-Insert` mode, same as `i`                                      |
+| `a`           | switch to `iedit-Insert` mode, same as `a`                                      |
+| `I`           | go to the beginning of the current occurrence and switch to `iedit-Insert` mode |
+| `A`           | go to the end of the current occurrence and switch to `iedit-Insert` mode       |
+| `<Left>`/`h`  | Move cursor to left                                                             |
+| `<Right>`/`l` | Move cursor to right                                                            |
+| `0`/`<Home>`  | go to the beginning of the current occurrence                                   |
+| `$`/`<End>`   | go to the end of the current occurrence                                         |
+| `D`           | delete the occurrences                                                          |
+| `S`           | delete the occurrences and switch to iedit-Insert mode                          |
+| `gg`          | go to first occurrence                                                          |
+| `G`           | go to last occurrence                                                           |
+| `n`           | go to next occurrence                                                           |
+| `N`           | go to previous occurrence                                                       |
+| `p`           | replace occurrences with last yanked (copied) text                              |
+| `<Tab>`       | toggle current occurrence                                                       |
 
 **In iedit-Insert mode:**
 
